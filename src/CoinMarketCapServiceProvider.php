@@ -5,6 +5,9 @@ namespace Convertain\CoinMarketCap;
 use Illuminate\Support\ServiceProvider;
 use Convertain\CoinMarketCap\Client\CoinMarketCapClient;
 use Convertain\CoinMarketCap\CoinMarketCapProvider;
+use Convertain\CoinMarketCap\Services\CryptocurrencyService;
+use Convertain\CoinMarketCap\Contracts\CryptocurrencyServiceInterface;
+use Convertain\CoinMarketCap\Transformers\CryptocurrencyTransformer;
 
 class CoinMarketCapServiceProvider extends ServiceProvider
 {
@@ -24,6 +27,22 @@ class CoinMarketCapServiceProvider extends ServiceProvider
                 $app['config']->get('coinmarketcap')
             );
         });
+
+        // Register the transformer
+        $this->app->singleton(CryptocurrencyTransformer::class, function ($app) {
+            return new CryptocurrencyTransformer();
+        });
+
+        // Register the cryptocurrency service
+        $this->app->singleton(CryptocurrencyServiceInterface::class, function ($app) {
+            return new CryptocurrencyService(
+                $app[CoinMarketCapClient::class],
+                $app[CryptocurrencyTransformer::class],
+                $app['config']->get('coinmarketcap')
+            );
+        });
+
+        $this->app->alias(CryptocurrencyServiceInterface::class, CryptocurrencyService::class);
 
         // Register the provider
         $this->app->singleton(CoinMarketCapProvider::class, function ($app) {
@@ -64,6 +83,9 @@ class CoinMarketCapServiceProvider extends ServiceProvider
         return [
             CoinMarketCapClient::class,
             CoinMarketCapProvider::class,
+            CryptocurrencyTransformer::class,
+            CryptocurrencyServiceInterface::class,
+            CryptocurrencyService::class,
         ];
     }
 }
