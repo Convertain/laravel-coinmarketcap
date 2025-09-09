@@ -1,0 +1,13 @@
+/vendor/
+/.idea/
+/.vscode/
+/.vagrant/
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.env.production
+.env.staging
+.env.testing
+composer.phar
+*.log
