@@ -18,14 +18,17 @@ class CoinMarketCapServiceProvider extends ServiceProvider
             'coinmarketcap'
         );
 
-        // Register the API client
+        // Register cache services
+        $this->registerCacheServices();
+
+        // Register the API client (placeholder for future implementation)
         $this->app->singleton(CoinMarketCapClient::class, function ($app) {
             return new CoinMarketCapClient(
                 $app['config']->get('coinmarketcap')
             );
         });
 
-        // Register the provider
+        // Register the provider (placeholder for future implementation)
         $this->app->singleton(CoinMarketCapProvider::class, function ($app) {
             return new CoinMarketCapProvider(
                 $app[CoinMarketCapClient::class]
@@ -39,6 +42,43 @@ class CoinMarketCapServiceProvider extends ServiceProvider
                 return $providers;
             });
         }
+    }
+
+    /**
+     * Register cache-related services.
+     */
+    private function registerCacheServices(): void
+    {
+        // Register cache analytics
+        $this->app->singleton(\Convertain\CoinMarketCap\Cache\CacheAnalytics::class, function ($app) {
+            return new \Convertain\CoinMarketCap\Cache\CacheAnalytics();
+        });
+
+        // Register cache strategy
+        $this->app->singleton(\Convertain\CoinMarketCap\Cache\CacheStrategy::class, function ($app) {
+            return new \Convertain\CoinMarketCap\Cache\CacheStrategy(
+                $app[\Convertain\CoinMarketCap\Cache\CacheAnalytics::class]
+            );
+        });
+
+        // Register main cache service
+        $this->app->singleton(\Convertain\CoinMarketCap\Cache\CoinMarketCapCache::class, function ($app) {
+            return new \Convertain\CoinMarketCap\Cache\CoinMarketCapCache(
+                null, // Will use default cache store
+                $app[\Convertain\CoinMarketCap\Cache\CacheAnalytics::class],
+                $app[\Psr\Log\LoggerInterface::class]
+            );
+        });
+
+        // Register cache warmer
+        $this->app->singleton(\Convertain\CoinMarketCap\Cache\CacheWarmer::class, function ($app) {
+            return new \Convertain\CoinMarketCap\Cache\CacheWarmer(
+                $app[\Convertain\CoinMarketCap\Cache\CoinMarketCapCache::class],
+                $app[\Convertain\CoinMarketCap\Cache\CacheStrategy::class],
+                $app[\Convertain\CoinMarketCap\Cache\CacheAnalytics::class],
+                $app[\Psr\Log\LoggerInterface::class]
+            );
+        });
     }
 
     /**
@@ -64,6 +104,10 @@ class CoinMarketCapServiceProvider extends ServiceProvider
         return [
             CoinMarketCapClient::class,
             CoinMarketCapProvider::class,
+            \Convertain\CoinMarketCap\Cache\CacheAnalytics::class,
+            \Convertain\CoinMarketCap\Cache\CacheStrategy::class,
+            \Convertain\CoinMarketCap\Cache\CoinMarketCapCache::class,
+            \Convertain\CoinMarketCap\Cache\CacheWarmer::class,
         ];
     }
 }
