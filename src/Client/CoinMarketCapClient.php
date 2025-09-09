@@ -212,8 +212,12 @@ class CoinMarketCapClient
      */
     private function cacheGet(string $key)
     {
-        if (class_exists('Illuminate\Support\Facades\Cache')) {
-            return \Illuminate\Support\Facades\Cache::get($key);
+        try {
+            if (class_exists('Illuminate\Support\Facades\Cache') && method_exists('Illuminate\Support\Facades\Cache', 'get')) {
+                return \Illuminate\Support\Facades\Cache::get($key);
+            }
+        } catch (Exception $e) {
+            // Facade not available
         }
         return null;
     }
@@ -225,8 +229,12 @@ class CoinMarketCapClient
      */
     private function cachePut(string $key, $value, int $ttl): void
     {
-        if (class_exists('Illuminate\Support\Facades\Cache')) {
-            \Illuminate\Support\Facades\Cache::put($key, $value, $ttl);
+        try {
+            if (class_exists('Illuminate\Support\Facades\Cache') && method_exists('Illuminate\Support\Facades\Cache', 'put')) {
+                \Illuminate\Support\Facades\Cache::put($key, $value, $ttl);
+            }
+        } catch (Exception $e) {
+            // Facade not available
         }
     }
 
@@ -241,12 +249,18 @@ class CoinMarketCapClient
             return;
         }
 
-        if (class_exists('Illuminate\Support\Facades\Log')) {
-            \Illuminate\Support\Facades\Log::{$level}($message, $context);
-        } else {
-            // Fallback to error_log for non-Laravel environments
-            $logMessage = $message . ' ' . json_encode($context);
-            error_log("[$level] $logMessage");
+        // Try Laravel Log facade first
+        try {
+            if (class_exists('Illuminate\Support\Facades\Log') && method_exists('Illuminate\Support\Facades\Log', $level)) {
+                \Illuminate\Support\Facades\Log::{$level}($message, $context);
+                return;
+            }
+        } catch (Exception $e) {
+            // Facade not available, fall through to error_log
         }
+
+        // Fallback to error_log for non-Laravel environments
+        $logMessage = $message . ' ' . json_encode($context);
+        error_log("[$level] $logMessage");
     }
 }
