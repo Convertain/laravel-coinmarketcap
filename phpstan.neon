@@ -1,0 +1,17 @@
+parameters:
+    level: 10
+    paths:
+        - src
+    excludePaths:
+        - vendor
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        # Carbon methods that are dynamically added
+        - '#Call to an undefined method Carbon\\Carbon::#'
+        # Allow mixed types for API responses
+        - '#has no return type specified#'
+        - '#Method .* has parameter .* with no type specified#'
+        # Ignore Laravel facade magic
+        - '#Access to an undefined property Illuminate\\#'
+        - '#Call to an undefined method Illuminate\\#'
