@@ -11,12 +11,11 @@
     ],
     "require": {
         "php": "^8.3",
-        "illuminate/support": "^12.0",
-        "illuminate/cache": "^12.0",
-        "illuminate/events": "^12.0",
+        "illuminate/support": "^11.0",
+        "illuminate/cache": "^11.0", 
+        "illuminate/events": "^11.0",
         "guzzlehttp/guzzle": "^7.0",
-        "nesbot/carbon": "^3.0",
-        "convertain/laravel-cryptocurrency": "^1.0"
+        "nesbot/carbon": "^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "^9.0",
