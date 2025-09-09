@@ -1,0 +1,50 @@
+{
+    "name": "convertain/laravel-coinmarketcap",
+    "description": "Laravel CoinMarketCap Pro API provider package implementing CryptoDataProvider interface for comprehensive cryptocurrency market data, exchange information, and global metrics with credit optimization",
+    "keywords": ["laravel", "coinmarketcap", "cryptocurrency", "api", "provider", "bitcoin", "crypto", "credits"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Christian Rauchenwald",
+            "email": "christian@convertain.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12.0",
+        "illuminate/cache": "^12.0",
+        "illuminate/events": "^12.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^3.0",
+        "convertain/laravel-cryptocurrency": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0",
+        "mockery/mockery": "^1.6",
+        "laravel/pint": "^1.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Convertain\\CoinMarketCap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Convertain\\CoinMarketCap\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Convertain\\CoinMarketCap\\CoinMarketCapServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
