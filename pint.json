@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Laravel Pint">
+    <description>Laravel Pint configuration for CoinMarketCap package</description>
+    
+    <!-- Include all PHP files -->
+    <file>src/</file>
+    <file>tests/</file>
+    
+    <!-- Exclude vendor and other directories -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>coverage/*</exclude-pattern>
+    <exclude-pattern>*.xml</exclude-pattern>
+    
+    <!-- Use PSR-12 as base standard -->
+    <rule ref="PSR12"/>
+    
+    <!-- Additional rules for code quality -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+    <rule ref="Generic.Commenting.Todo"/>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+    
+    <!-- Laravel specific rules -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+    <rule ref="PEAR.Classes.ClassDeclaration"/>
+    <rule ref="Squiz.Classes.ValidClassName"/>
+</ruleset>

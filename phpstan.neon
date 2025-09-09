@@ -1,0 +1,31 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    
+parameters:
+    level: 10
+    paths:
+        - src
+        - tests
+    
+    excludePaths:
+        - vendor
+        - coverage
+    
+    ignoreErrors:
+        # Allow dynamic properties in test classes
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+#'
+    
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+    reportUnmatchedIgnoredErrors: true
+    
+    # Laravel specific configurations
+    scanDirectories:
+        - vendor/laravel/framework/src/Illuminate
+    
+    # Mockery support
+    stubFiles:
+        - vendor/mockery/mockery/library/Mockery.php
+    
+    # Additional type checking
+    treatPhpDocTypesAsCertain: false
