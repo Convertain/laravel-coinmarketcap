@@ -1,0 +1,33 @@
+# Dependencies
+vendor/
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Laravel
+.env
+.env.backup
+.phpunit.result.cache
+storage/
+bootstrap/cache/
+
+# Composer
+composer.phar
+composer.lock
+
+# Temporary files
+*.tmp
+*.zip~
+*.log
+
+# Build artifacts
+dist/
+build/
