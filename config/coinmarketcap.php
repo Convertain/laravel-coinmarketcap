@@ -86,12 +86,16 @@ return [
     |
     | Configure aggressive caching to minimize API calls and credit consumption.
     | Different TTL values for different types of data based on update frequency.
+    | Includes cache warming, analytics, and strategy configurations.
     |
     */
     'cache' => [
         'enabled' => env('COINMARKETCAP_CACHE_ENABLED', true),
         'store' => env('COINMARKETCAP_CACHE_STORE'),
         'prefix' => 'coinmarketcap',
+        'strategy' => env('COINMARKETCAP_CACHE_STRATEGY', 'balanced'), // aggressive, balanced, fresh, adaptive
+        'analytics_enabled' => env('COINMARKETCAP_CACHE_ANALYTICS', true),
+        'warming_enabled' => env('COINMARKETCAP_CACHE_WARMING', true),
         'ttl' => [
             // Static/semi-static data - cache longer
             'cryptocurrency_map' => env('COINMARKETCAP_CACHE_MAP_TTL', 86400), // 24 hours
@@ -116,6 +120,14 @@ return [
             
             // Historical data - long caching
             'historical' => env('COINMARKETCAP_CACHE_HISTORICAL_TTL', 3600), // 1 hour
+            
+            // Default fallback
+            'default' => env('COINMARKETCAP_CACHE_DEFAULT_TTL', 300), // 5 minutes
+        ],
+        'warming_priorities' => [
+            // Override default warming priorities if needed
+            // 'cryptocurrency_map' => 10,
+            // 'fiat_map' => 10,
         ],
     ],
 
